@@ -1,0 +1,9 @@
+header {
+background-image: linear-gradient(to left, #281F62, #4C58B2);
+color: #fff;
+};
+
+.cityList {
+    background-color: #ADADAD;
+    border-radius: 1;
+}
