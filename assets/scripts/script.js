@@ -7,8 +7,7 @@ var apiKey = "0183fd03d05f07731ce37712f2c3840e";
 var cityName;
 var queryURL;
 var geoUrl;
-var returnedData = [];
-
+var coordinates = [];
 
 //DOM elements
 var cityNameEl = $("#cityInput");
@@ -33,12 +32,11 @@ geoUrl = geoRequest + "?q=" + cityName + "&appid=" + apiKey
 todaysForecast(queryURL);
 geoLocation(geoUrl);
 
-var lon = returnedData[0];
-var lat = returnedData[1];
+longitude = coordinates[0];
+latitude = coordinates[1];
 
-//fiveDayForecast();
-console.log(lon);
-console.log(lat);
+console.log(longitude);
+console.log(latitude);
 
 clearInput();
 
@@ -55,11 +53,11 @@ function todaysForecast(queryURL) {
     .then(function (response) {
         if (!response.ok) {
             window.alert("Sorry, city not found");
+            return;
         }
         else {return response.json();}
     })
     .then(function (data) {
-        console.log(data);
         var icon = "http://openweathermap.org/img/w/"+ data.weather[0].icon + ".png"
         citylabelEL.text(data.name + " " + todaysDate.format("(M/DD/YYYY) "));
         citylabelEL.append("<img src=" + icon + ">");
@@ -76,9 +74,11 @@ function geoLocation(geoUrl) {
         return response.json();
     })
     .then(function (data) {
-        console.log(data);
-        returnedData[0] = data[0].lon;
-        returnedData[1] = data[0].lat;
-        return returnedData;
+        lon = data[0].lon;
+        lat = data[0].lat;
+        
+        coordinates = [lon, lat];
+        console.log(coordinates);
+        return coordinates;
     });
 }
