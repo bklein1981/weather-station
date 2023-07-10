@@ -6,6 +6,7 @@ var apiKey = "0183fd03d05f07731ce37712f2c3840e";
 //variables
 var cityName;
 var queryURL;
+var geoUrl;
 var returnedData = [];
 
 
@@ -28,9 +29,9 @@ currentDayEl.text(todaysDate.format("dddd, MMMM D  hA"));
 $("#searchButton").on("click", function (event) {
 cityName = cityNameEl.val().trim();
 queryURL = requestURL + "?q=" + cityName + "&units=imperial&appid=" + apiKey;
-
+geoUrl = geoRequest + "?q=" + cityName + "&appid=" + apiKey
 todaysForecast(queryURL);
-geoLocation();
+geoLocation(geoUrl);
 
 var lon = returnedData[0];
 var lat = returnedData[1];
@@ -40,7 +41,6 @@ console.log(lon);
 console.log(lat);
 
 clearInput();
-
 
 });
 
@@ -59,29 +59,26 @@ function todaysForecast(queryURL) {
         else {return response.json();}
     })
     .then(function (data) {
+        console.log(data);
         var icon = "http://openweathermap.org/img/w/"+ data.weather[0].icon + ".png"
         citylabelEL.text(data.name + " " + todaysDate.format("(M/DD/YYYY) "));
         citylabelEL.append("<img src=" + icon + ">");
         currentTempEL.text(data.main.temp + " ℉");
         currentHumidityEL.text(data.main.humidity + " %"); ;
         currentWindSpeedEL.text(data.wind.speed + " MPH");
-        
     });
 };
 
 //function to get longitude and latitude
-function geoLocation() {
-    var geoUrl = geoRequest + "?q=" + cityName + "&limit=1&appid=" + apiKey
+function geoLocation(geoUrl) {
     fetch(geoUrl)
     .then(function (response) {
-        return response.json();})
-        .then(function (data) {
-            returnedData = []
-            returnedData[0] = data[0].lon;
-            returnedData[1] = data[0].lat;
-            return returnedData;
-
-        });
-
-    
+        return response.json();
+    })
+    .then(function (data) {
+        console.log(data);
+        returnedData[0] = data[0].lon;
+        returnedData[1] = data[0].lat;
+        return returnedData;
+    });
 }
