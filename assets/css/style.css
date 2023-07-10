@@ -1,11 +1,31 @@
+body{
+    font-family: 'Josefin Sans', sans-serif;
+    font-family: 'Raleway', sans-serif;
+}
+
+h1, h2, h3, h4 {
+    font-weight: bold;
+}
+
 header {
 background-image: linear-gradient(to left, #281F62, #4C58B2);
 color: #fff;
-};
+}
 
 .cityList {
-    background-color: #ADADAD;
-    border-radius: 1;
+    color: black;
+    background-color: #ADADAD !important;
+    border-radius: 3px !important;
     padding: 5px;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+.fiveDayBlock {
+    background-color: #383F4F;
+    color: #fff;
+}
+
+.fiveDayBlock p {
+    font-size: 15px;
+   margin-bottom: 5px;
 }

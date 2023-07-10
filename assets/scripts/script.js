@@ -1,7 +1,85 @@
 //Open Weather API url and API key
-var requestURL = "https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}";
+var requestURL = "https://api.openweathermap.org/data/2.5/weather";
+var geoRequest = "https://api.openweathermap.org/geo/1.0/direct";
 var apiKey = "0183fd03d05f07731ce37712f2c3840e";
-// Set up the date/time variables
+
+//variables
+var cityName;
+var queryURL;
+
+
+//DOM elements
+var cityNameEl = $("#cityInput");
+var citySearchBtnEL = $("searchButton");
+var recentSearchEL = $("#recentSearch");
+var citylabelEL = $("#cityLabel");
+var currentTempEL = $("#currentTemp");
+var currentHumidityEL = $("#currentHumidity");
+var currentWindSpeedEL = $("#currentWind");
+
+// Set up the date/time variables for header
 var currentDayEl = $("#currentDate");
-var todaysDate = dayjs().format("dddd, MMMM D  hA");
-currentDayEl.text(todaysDate);
+var currentTempDateEL = $("#currentTempDate")
+var todaysDate = dayjs();
+currentDayEl.text(todaysDate.format("dddd, MMMM D  hA"));
+
+//Search Button
+$("#searchButton").on("click", function (event) {
+cityName = cityNameEl.val().trim();
+queryURL = requestURL + "?q=" + cityName + "&units=imperial&appid=" + apiKey;
+
+todaysForecast(queryURL);
+
+var lon = geoLocation[lon];
+var lat = geoLocation[1];
+
+//fiveDayForecast();
+console.log(lon);
+console.log(lat);
+
+clearInput();
+
+
+});
+
+//Clears the input field
+function clearInput() {
+    cityNameEl.val("");
+}
+
+//Function to get today's forecast
+function todaysForecast(queryURL) {
+    fetch(queryURL)
+    .then(function (response) {
+        if (!response.ok) {
+            window.alert("Sorry, city not found");
+        }
+        else {return response.json();}
+    })
+    .then(function (data) {
+        var icon = "http://openweathermap.org/img/w/"+ data.weather[0].icon + ".png"
+        citylabelEL.text(data.name + " " + todaysDate.format("(M/DD/YYYY) "));
+        citylabelEL.append("<img src=" + icon + ">");
+        currentTempEL.text(data.main.temp + " ℉");
+        currentHumidityEL.text(data.main.humidity + " %"); ;
+        currentWindSpeedEL.text(data.wind.speed + " MPH");
+        
+    });
+};
+
+//function to get 5 day forecast
+function geoLocation() {
+    var geoUrl = geoRequest + "?q=" + cityName + "&limit=1&appid=" + apiKey
+    fetch(geoUrl)
+    .then(function (response) {
+        return response.json();})
+        .then(function (data) {
+            var returnedData = []
+            returnedData["lon"] = data[0].lon;
+            returnedData["lat"] = data[0].lat;
+            return returnedData;
+
+        });
+
+    
+}
