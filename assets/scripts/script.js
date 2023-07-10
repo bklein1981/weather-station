@@ -6,6 +6,7 @@ var apiKey = "0183fd03d05f07731ce37712f2c3840e";
 //variables
 var cityName;
 var queryURL;
+var returnedData = [];
 
 
 //DOM elements
@@ -29,9 +30,10 @@ cityName = cityNameEl.val().trim();
 queryURL = requestURL + "?q=" + cityName + "&units=imperial&appid=" + apiKey;
 
 todaysForecast(queryURL);
+geoLocation();
 
-var lon = geoLocation[lon];
-var lat = geoLocation[1];
+var lon = returnedData[0];
+var lat = returnedData[1];
 
 //fiveDayForecast();
 console.log(lon);
@@ -67,16 +69,16 @@ function todaysForecast(queryURL) {
     });
 };
 
-//function to get 5 day forecast
+//function to get longitude and latitude
 function geoLocation() {
     var geoUrl = geoRequest + "?q=" + cityName + "&limit=1&appid=" + apiKey
     fetch(geoUrl)
     .then(function (response) {
         return response.json();})
         .then(function (data) {
-            var returnedData = []
-            returnedData["lon"] = data[0].lon;
-            returnedData["lat"] = data[0].lat;
+            returnedData = []
+            returnedData[0] = data[0].lon;
+            returnedData[1] = data[0].lat;
             return returnedData;
 
         });
