@@ -1,13 +1,15 @@
 //Open Weather API url and API key
 var requestURL = "https://api.openweathermap.org/data/2.5/weather";
 var geoRequest = "https://api.openweathermap.org/geo/1.0/direct";
+var fiveDayRequest = "https://api.openweathermap.org/data/2.5/forecast";
 var apiKey = "0183fd03d05f07731ce37712f2c3840e";
 
 //variables
 var cityName;
 var queryURL;
 var geoUrl;
-var coordinates = [];
+var fiveDayUrl;
+
 
 //DOM elements
 var cityNameEl = $("#cityInput");
@@ -24,19 +26,13 @@ var currentTempDateEL = $("#currentTempDate")
 var todaysDate = dayjs();
 currentDayEl.text(todaysDate.format("dddd, MMMM D  hA"));
 
+
 //Search Button
 $("#searchButton").on("click", function (event) {
-cityName = cityNameEl.val().trim();
-queryURL = requestURL + "?q=" + cityName + "&units=imperial&appid=" + apiKey;
-geoUrl = geoRequest + "?q=" + cityName + "&appid=" + apiKey
-todaysForecast(queryURL);
-geoLocation(geoUrl);
+    cityName = cityNameEl.val().trim();
+    todaysForecast(queryURL);
+extendedForecast(geoUrl);
 
-longitude = coordinates[0];
-latitude = coordinates[1];
-
-console.log(longitude);
-console.log(latitude);
 
 clearInput();
 
@@ -49,6 +45,7 @@ function clearInput() {
 
 //Function to get today's forecast
 function todaysForecast(queryURL) {
+    queryURL = requestURL + "?q=" + cityName + "&units=imperial&appid=" + apiKey;
     fetch(queryURL)
     .then(function (response) {
         if (!response.ok) {
@@ -68,17 +65,29 @@ function todaysForecast(queryURL) {
 };
 
 //function to get longitude and latitude
-function geoLocation(geoUrl) {
+function extendedForecast(geoUrl) {
+    geoUrl = geoRequest + "?q=" + cityName + "&appid=" + apiKey
     fetch(geoUrl)
     .then(function (response) {
         return response.json();
     })
     .then(function (data) {
-        lon = data[0].lon;
-        lat = data[0].lat;
-        
-        coordinates = [lon, lat];
-        console.log(coordinates);
-        return coordinates;
+        var longitude = data[0].lon; 
+        var latitude = data[0].lat;
+        fiveDay(latitude, longitude);
+    });
+}
+
+function fiveDay(latitude, longitude) {
+    lat = latitude;
+    lon = longitude;
+    console.log(lon + " " + lat);
+    fiveDayURL = fiveDayRequest + "?lat=" + lat + "&lon=" + lon + "&units=imperial&appid=" + apiKey;
+    console.log(fiveDayURL);
+    fetch(fiveDayURL)
+    .then(function (response) {
+        return response.json();})
+    .then(function (data) {
+        console.log(data);
     });
 }
