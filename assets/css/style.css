@@ -26,6 +26,10 @@ color: #fff;
 }
 
 .fiveDayBlock p {
-    font-size: 15px;
-   margin-bottom: 5px;
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.cityList:hover {
+    cursor: pointer;
 }
