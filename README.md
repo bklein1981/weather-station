@@ -6,7 +6,7 @@ N/A
 ## Usage
 Users input the city they would like to see weather conditions for in the search bar. Hitting the search button shows the current weather conditions in the main section on the left. Five day forecasts are shown below the main section. Under the search bar, a list of cities is shown which you have searched for. Clicking on any of those cities will return the weather conditions for that city.
 
-![Navigation Image](./Assets/Images/weather-station.png)
+![Navigation Image](./assets/images/weather-station.png)
 
 #### Repository
 https://github.com/bklein1981/weather-station
